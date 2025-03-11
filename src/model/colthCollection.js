@@ -23,7 +23,6 @@ const clothCollectionSchema = new mongoose.Schema({
   },
   collectionOccasion: {
     type: String,
-    required: true,
   },
   favourite: {
     type: Boolean,

@@ -132,7 +132,7 @@ app.post("/clothCollection", async (req, res) => {
   }
 });
 
-//get favourite of the user
+//get clothes of a user
 app.get("/getClothes", async (req, res) => {
   try {
     const userId = "user_2tgMeUJSpE5wO9OOxYFnHRWdMEb";
