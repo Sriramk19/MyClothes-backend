@@ -153,6 +153,23 @@ app.get("/getClothes", async (req, res) => {
   }
 });
 
+app.get("/getCollection", async (req, res) => {
+  try {
+    console.log("Request received from IP: ", req.ip);
+    const collectionData = await ClothCollection.find({
+      fromUserId: "user_2tgMeUJSpE5wO9OOxYFnHRWdMEb",
+    })
+      .populate("fromclothId")
+      .exec();
+    res.json(collectionData);
+    console.log(collectionData);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: "Error fetching collections: " + err.message });
+  }
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`🚀 Server started successfully on http://localhost:${PORT}`);
