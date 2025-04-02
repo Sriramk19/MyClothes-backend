@@ -88,11 +88,11 @@ app.post("/login", async (req, res) => {
 
 app.post("/clothes", upload.none(), async (req, res) => {
   // Dont forget to add the middlewarecler for authentication!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  const { category, tag, occasion, brand, image } = req.body;
+  const { category, tag, occasion, brand, image, userId } = req.body;
   console.log(req.body);
   try {
     const newClothDetails = Cloth({
-      fromUserId: "user_2tgMeUJSpE5wO9OOxYFnHRWdMEb",
+      fromUserId: userId, //"user_2tgMeUJSpE5wO9OOxYFnHRWdMEb",
       clothType: category,
       tag: tag,
       occasion: occasion,
@@ -135,7 +135,7 @@ app.post("/clothCollection", async (req, res) => {
 //get clothes of a user
 app.get("/getClothes", async (req, res) => {
   try {
-    const userId = "user_2tgMeUJSpE5wO9OOxYFnHRWdMEb";
+    const userId = req.query.userId;
 
     const clothes = await Cloth.find({ fromUserId: userId });
     const clothesList = clothes.map((cloth) => ({
@@ -155,14 +155,13 @@ app.get("/getClothes", async (req, res) => {
 
 app.get("/getCollection", async (req, res) => {
   try {
-    console.log("Request received from IP: ", req.ip);
+    clerkId = req.query.userId;
     const collectionData = await ClothCollection.find({
-      fromUserId: "user_2tgMeUJSpE5wO9OOxYFnHRWdMEb",
+      fromUserId: clerkId,
     })
       .populate("fromclothId")
       .exec();
     res.json(collectionData);
-    console.log(collectionData);
   } catch (err) {
     res
       .status(500)
