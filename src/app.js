@@ -10,7 +10,7 @@ const { clerkMiddleware } = require("@clerk/express");
 const ClothCollection = require("./model/colthCollection");
 
 const app = express();
-const PORT = 7777;
+const PORT = process.env.PORT || 7777;
 const upload = multer();
 
 connectDB() //To ensure data is stored in the database, the database connection from database.js must be established before starting the server.
@@ -22,6 +22,7 @@ connectDB() //To ensure data is stored in the database, the database connection 
   });
 
 // Apply Clerk Middleware
+app.use(clerkMiddleware());
 app.use(express.json());
 app.use(
   cors({
@@ -87,12 +88,12 @@ app.post("/login", async (req, res) => {
 //Uploading Clothes by a User
 
 app.post("/clothes", upload.none(), async (req, res) => {
-  // Dont forget to add the middlewarecler for authentication!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // Dont forget to add the middleware for authentication!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   const { category, tag, occasion, brand, image, userId } = req.body;
   console.log(req.body);
   try {
     const newClothDetails = Cloth({
-      fromUserId: userId, //"user_2tgMeUJSpE5wO9OOxYFnHRWdMEb",
+      fromUserId: userId,
       clothType: category,
       tag: tag,
       occasion: occasion,

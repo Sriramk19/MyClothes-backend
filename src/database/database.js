@@ -2,9 +2,7 @@
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
-  mongoose.connect(
-    "mongodb+srv://sriramdk99:6mowBKFMvrCw3sNn@myclothes.a7usf.mongodb.net/MyClothes" // Specify database name
-  );
+  mongoose.connect(process.env.MONGODB_URI);
 };
 
 module.exports = connectDB;
