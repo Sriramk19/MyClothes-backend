@@ -6,9 +6,9 @@ const User = require("./model/user");
 const Cloth = require("./model/cloth");
 const multer = require("multer");
 const { clerkClient, EmailAddress } = require("@clerk/express");
-const { clerkMiddleware } = require("@clerk/express");
+const { clerkMiddleware, requireAuth } = require("@clerk/express");
 const ClothCollection = require("./model/colthCollection");
-
+const { ClerkExpressWithAuth } = require("@clerk/express");
 const app = express();
 const PORT = process.env.PORT || 7777;
 const upload = multer();
@@ -26,7 +26,7 @@ app.use(clerkMiddleware());
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173", // Change this to your frontend's origin
+    origin: "http://localhost:5173", // Change to frontend's origin
   })
 );
 // Test route
@@ -87,9 +87,11 @@ app.post("/login", async (req, res) => {
 
 //Uploading Clothes by a User
 
-app.post("/clothes", upload.none(), async (req, res) => {
+app.post("/clothes", requireAuth(), upload.none(), async (req, res) => {
   // Dont forget to add the middleware for authentication!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  const { category, tag, occasion, brand, image, userId } = req.body;
+  const { category, tag, occasion, brand, image } = req.body;
+  const userId = req.auth.userId;
+  console.log("User Auth Info:", req.auth);
   console.log(req.body);
   try {
     const newClothDetails = Cloth({
@@ -108,7 +110,7 @@ app.post("/clothes", upload.none(), async (req, res) => {
 });
 
 //Createing a cloth colelction
-app.post("/clothCollection", async (req, res) => {
+app.post("/clothCollection", requireAuth(), async (req, res) => {
   const {
     fromUserId,
     fromclothId,
@@ -117,9 +119,10 @@ app.post("/clothCollection", async (req, res) => {
     collectionOccasion,
     favourite,
   } = req.body;
+  const userId = req.auth.userId;
   try {
     const newColthCollection = ClothCollection({
-      fromUserId,
+      fromUserId: userId,
       fromclothId,
       collectionName,
       collectionDescription,
@@ -134,9 +137,9 @@ app.post("/clothCollection", async (req, res) => {
 });
 
 //get clothes of a user
-app.get("/getClothes", async (req, res) => {
+app.get("/getClothes", requireAuth(), async (req, res) => {
   try {
-    const userId = req.query.userId;
+    const userId = req.auth.userId;
 
     const clothes = await Cloth.find({ fromUserId: userId });
     const clothesList = clothes.map((cloth) => ({
@@ -154,11 +157,11 @@ app.get("/getClothes", async (req, res) => {
   }
 });
 
-app.get("/getCollection", async (req, res) => {
+app.get("/getCollection", requireAuth(), async (req, res) => {
   try {
-    clerkId = req.query.userId;
+    const userId = req.auth.userId;
     const collectionData = await ClothCollection.find({
-      fromUserId: clerkId,
+      fromUserId: userId,
     })
       .populate("fromclothId")
       .exec();
