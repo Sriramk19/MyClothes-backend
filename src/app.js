@@ -24,9 +24,14 @@ connectDB() //To ensure data is stored in the database, the database connection 
 // Apply Clerk Middleware
 app.use(clerkMiddleware());
 app.use(express.json());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://clothes-web-a8tq.vercel.app",
+];
 app.use(
   cors({
-    origin: "http://localhost:5173", // Change to frontend's origin
+    origin: allowedOrigins,
+    credentials: true,
   })
 );
 // Test route
