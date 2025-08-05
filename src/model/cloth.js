@@ -13,7 +13,7 @@ const clothSchema = new mongoose.Schema({
     type: String,
     // required: true,
     enum: {
-      values: ["Formal", "Semi-formal", "Casual", "Activewear", "Party"],
+      values: ["Formal", "Semi-Formal", "Casual", "Activewear", "Party"],
       message: "Invalid occasion type: {VALUE}",
     },
   },
