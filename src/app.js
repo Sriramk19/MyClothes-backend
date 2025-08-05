@@ -140,6 +140,28 @@ app.post("/clothCollection", requireAuth(), async (req, res) => {
     res.status(401).json({ message: "Cloth collection Error: " + err.message });
   }
 });
+//Deleting a cloth collection
+app.delete("/clothCollectionDelete/:id", requireAuth(), async (req, res) => {
+  const collectionId = req.params.id;
+  const userId = req.auth.userId;
+
+  try {
+    const deletedCollection = await ClothCollection.findOneAndDelete({
+      _id: collectionId,
+      fromUserId: userId, // Ensure user can delete only their collections
+    });
+
+    if (!deletedCollection) {
+      return res.status(404).json({ message: "Collection not found" });
+    }
+
+    res.json({ message: "Collection deleted successfully" });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error deleting collection: " + err.message });
+  }
+});
 
 //get clothes of a user
 app.get("/getClothes", requireAuth(), async (req, res) => {
