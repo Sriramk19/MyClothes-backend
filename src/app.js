@@ -25,7 +25,7 @@ connectDB() //To ensure data is stored in the database, the database connection 
 app.use(clerkMiddleware());
 app.use(express.json());
 const allowedOrigins = [
-  "http://localhost:5173",
+  "http://localhost:5174",
   "https://clothes-web-a8tq.vercel.app",
 ];
 app.use(
