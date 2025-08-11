@@ -5,11 +5,11 @@
 3. Configure environment variables
    Create a .env file in the root directory and include:
 
-- MONGO_URI=<your_mongodb_connection_string>
-- CLOUDINARY_CLOUD_NAME=<your_cloudinary_name>
-- CLOUDINARY_API_KEY=<your_cloudinary_api_key>
-- CLOUDINARY_API_SECRET=<your_cloudinary_api_secret>
-- CLERK_SECRET_KEY=<your_clerk_secret_key>
+   - MONGO_URI=<your_mongodb_connection_string>
+   - CLOUDINARY_CLOUD_NAME=<your_cloudinary_name>
+   - CLOUDINARY_API_KEY=<your_cloudinary_api_key>
+   - CLOUDINARY_API_SECRET=<your_cloudinary_api_secret>
+   - CLERK_SECRET_KEY=<your_clerk_secret_key>
 
 4. Run the backend - npm start
 
